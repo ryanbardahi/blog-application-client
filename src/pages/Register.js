@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 
@@ -15,6 +15,8 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +65,7 @@ const Register = () => {
           password: '',
           confirmPassword: '',
         });
+        navigate('/login');
       } else {
         const error = await response.json();
         notyf.error(error.message || 'Registration failed!');

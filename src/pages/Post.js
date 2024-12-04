@@ -11,19 +11,22 @@ const Post = () => {
   const navigate = useNavigate();
   const { user, isLoggedIn } = useUserContext();
   const [post, setPost] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [editForm, setEditForm] = useState({ title: '', content: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetch(`https://blog-application-server-r3nf.onrender.com/posts/${id}`)
       .then((response) => response.json())
-      .then((data) => {
-        setPost(data);
-        setEditForm({ title: data.title, content: data.content });
-      })
+      .then((data) => setPost(data))
       .catch((error) => console.error('Error fetching post:', error));
+
+    fetch(`https://blog-application-server-r3nf.onrender.com/comments/post/${id}`)
+      .then((response) => response.json())
+      .then((data) => setComments(data))
+      .catch((error) => console.error('Error fetching comments:', error));
   }, [id]);
 
   if (!post) {
@@ -41,51 +44,7 @@ const Post = () => {
     user &&
     (user.id === authorId || user.isAdmin);
 
-  const canDelete = isLoggedIn && user && user.isAdmin;
-
-  const handleEditClick = () => {
-    setShowModal(true);
-  };
-
-  const handleEditFormChange = (e) => {
-    const { name, value } = e.target;
-    setEditForm({ ...editForm, [name]: value });
-  };
-
-  const handleEditFormSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    const token = localStorage.getItem('token');
-
-    try {
-      const response = await fetch(
-        `https://blog-application-server-r3nf.onrender.com/posts/${id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(editForm),
-        }
-      );
-
-      if (response.status === 200) {
-        const data = await response.json();
-        setPost(data);
-        setShowModal(false);
-        notyf.success('Post updated successfully!');
-      } else {
-        const error = await response.json();
-        notyf.error(error.error || 'Failed to update post.');
-      }
-    } catch (error) {
-      notyf.error('An error occurred while updating the post.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const canDeletePost = isLoggedIn && user && user.isAdmin;
 
   const handleDeleteClick = async () => {
     const confirmDelete = window.confirm('Are you sure you want to delete this post?');
@@ -120,6 +79,74 @@ const Post = () => {
     }
   };
 
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim()) {
+      notyf.error('Comment cannot be empty.');
+      return;
+    }
+
+    setIsSubmittingComment(true);
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch(
+        `https://blog-application-server-r3nf.onrender.com/comments/post/${id}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ content: newComment }),
+        }
+      );
+
+      if (response.status === 201) {
+        const comment = await response.json();
+        setComments((prevComments) => [...prevComments, comment]);
+        setNewComment('');
+        notyf.success('Comment added successfully!');
+      } else {
+        const error = await response.json();
+        notyf.error(error.error || 'Failed to add comment.');
+      }
+    } catch (error) {
+      notyf.error('An error occurred while adding the comment.');
+    } finally {
+      setIsSubmittingComment(false);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this comment?');
+    if (!confirmDelete) return;
+
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch(
+        `https://blog-application-server-r3nf.onrender.com/comments/${commentId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setComments((prevComments) => prevComments.filter((comment) => comment._id !== commentId));
+        notyf.success('Comment deleted successfully!');
+      } else {
+        const error = await response.json();
+        notyf.error(error.error || 'Failed to delete comment.');
+      }
+    } catch (error) {
+      notyf.error('An error occurred while deleting the comment.');
+    }
+  };
+
   return (
     <div className="post-page container my-5 pb-5">
       <h1 className="post-title">{post.title}</h1>
@@ -129,11 +156,11 @@ const Post = () => {
 
       <div className="d-flex gap-3">
         {canEdit && (
-          <button className="btn btn-secondary" onClick={handleEditClick}>
+          <button className="btn btn-secondary" onClick={() => setShowModal(true)}>
             Edit Post
           </button>
         )}
-        {canDelete && (
+        {canDeletePost && (
           <button
             className="btn btn-danger"
             onClick={handleDeleteClick}
@@ -150,59 +177,51 @@ const Post = () => {
         ))}
       </div>
 
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Edit Post</h2>
-            <form onSubmit={handleEditFormSubmit}>
-              <div className="mb-3">
-                <label htmlFor="editTitle" className="form-label">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  id="editTitle"
-                  name="title"
-                  className="form-control"
-                  value={editForm.title}
-                  onChange={handleEditFormChange}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="editContent" className="form-label">
-                  Content
-                </label>
-                <textarea
-                  id="editContent"
-                  name="content"
-                  className="form-control"
-                  rows="10"
-                  value={editForm.content}
-                  onChange={handleEditFormChange}
-                  required
-                  placeholder="Use double line breaks to separate paragraphs."
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="btn btn-primary me-2"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Updating...' : 'Update Post'}
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={() => setShowModal(false)}
-                disabled={isSubmitting}
-              >
-                Cancel
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+      <div className="comments-section mt-5">
+        <h3>Comments</h3>
+        {comments.length > 0 ? (
+          <ul className="list-group">
+            {comments.map((comment) => (
+              <li key={comment._id} className="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{comment.author.username}:</strong> {comment.content}
+                </div>
+                {user?.isAdmin && (
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => handleDeleteComment(comment._id)}
+                  >
+                    Delete
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No comments yet.</p>
+        )}
+
+        {isLoggedIn && (
+          <form onSubmit={handleAddComment} className="mt-3">
+            <div className="mb-3">
+              <textarea
+                className="form-control"
+                rows="3"
+                placeholder="Add a comment..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={isSubmittingComment}
+            >
+              {isSubmittingComment ? 'Submitting...' : 'Add Comment'}
+            </button>
+          </form>
+        )}
+      </div>
     </div>
   );
 };
