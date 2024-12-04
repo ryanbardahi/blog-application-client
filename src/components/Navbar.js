@@ -25,9 +25,11 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/">home</Link>
             </li>
-            {/* Other navigation items */}
             <li className="nav-item">
               <Link className="nav-link" to="/notes">notes</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/create-post">create a post</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/resources">resources</Link>
@@ -35,7 +37,6 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/talk-to-the-universe">talk to the universe</Link>
             </li>
-            {/* Conditional rendering based on login status */}
             {!isLoggedIn ? (
               <>
                 <li className="nav-item">

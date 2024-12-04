@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Notes from './pages/Notes';
 import Post from './pages/Post';
+import CreatePost from './pages/CreatePost';
 import Navbar from './components/Navbar';
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="/logout" element={<Logout />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/posts/:id" element={<Post />} />
+            <Route path="/create-post" element={<CreatePost />} />
           </Routes>
         </div>
       </Router>
