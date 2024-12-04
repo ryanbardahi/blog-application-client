@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
+import Notes from './pages/Notes';
+import Post from './pages/Post';
 import Navbar from './components/Navbar';
 
 const App = () => {
@@ -21,6 +23,8 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/notes" element={<Notes />} />
+            <Route path="/posts/:id" element={<Post />} />
           </Routes>
         </div>
       </Router>
