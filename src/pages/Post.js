@@ -32,11 +32,12 @@ const Post = () => {
 
   const paragraphs = post.content.split(/\n{2,}/);
 
-  // Check if the logged-in user is the author or an admin
+  const authorId = typeof post.author === 'object' ? post.author._id : post.author;
+
   const canEdit =
     isLoggedIn &&
     user &&
-    (user.id === post.author._id || user.isAdmin);
+    (user.id === authorId || user.isAdmin);
 
   const handleEditClick = () => {
     setShowModal(true);
