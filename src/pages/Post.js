@@ -102,7 +102,6 @@ const Post = () => {
         ))}
       </div>
 
-      {/* Edit Post Modal */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
