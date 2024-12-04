@@ -18,7 +18,6 @@ const Post = () => {
     fetch(`https://blog-application-server-r3nf.onrender.com/posts/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log('Fetched post data:', data);
         setPost(data);
         setEditForm({ title: data.title, content: data.content });
       })
@@ -38,10 +37,6 @@ const Post = () => {
     isLoggedIn &&
     user &&
     (user.id === post.author._id || user.isAdmin);
-
-  console.log('User:', user);
-  console.log('Is Logged In:', isLoggedIn);
-  console.log('Can Edit:', canEdit);
 
   const handleEditClick = () => {
     setShowModal(true);
