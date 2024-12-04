@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
+import { useUserContext } from '../contexts/UserContext';
 
 const notyf = new Notyf();
 
 const Login = () => {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
-
+  const [form, setForm] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const { login } = useUserContext();
 
   const navigate = useNavigate();
 
@@ -34,24 +32,15 @@ const Login = () => {
         'https://blog-application-server-r3nf.onrender.com/users/login',
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: form.email,
-            password: form.password,
-          }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: form.email, password: form.password }),
         }
       );
 
       if (response.status === 200) {
         const data = await response.json();
         notyf.success(data.message || 'Login successful!');
-
-        // Optionally store the token in localStorage or a context
-        localStorage.setItem('token', data.token);
-
-        // Navigate to the home page or dashboard
+        login(data.token, data.user);
         navigate('/');
       } else {
         const error = await response.json();
