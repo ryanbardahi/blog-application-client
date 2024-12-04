@@ -84,7 +84,7 @@ const Post = () => {
   };
 
   return (
-    <div className="post-page container my-5">
+    <div className="post-page container my-5 pb-5">
       <h1 className="post-title">{post.title}</h1>
       <p className="post-meta">
         By {post.author.username} on {formattedDate}
