@@ -12,7 +12,6 @@ const Notes = () => {
   }, []);
 
   const truncateContent = (content) => {
-    // Remove escape characters and truncate to 150 characters
     const plainText = content.replace(/\\n/g, ' ').replace(/\\/g, '');
     return plainText.length > 150 ? plainText.substring(0, 150) + '...' : plainText;
   };
@@ -30,7 +29,7 @@ const Notes = () => {
                   {truncateContent(post.content)}
                 </p>
                 <Link to={`/posts/${post._id}`} className="btn btn-primary mt-auto">
-                  Read blog
+                  Read this meditation note
                 </Link>
               </div>
             </div>
