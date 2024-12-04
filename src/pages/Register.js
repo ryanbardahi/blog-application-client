@@ -16,7 +16,7 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
