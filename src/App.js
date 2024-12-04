@@ -1,6 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import Register from './pages/Register';
+import Navbar from './components/Navbar';
 
 function App() {
   const isLoggedIn = false;
@@ -11,22 +13,10 @@ function App() {
         <header>
           <h1 className="page-title">the meditation notes</h1>
         </header>
-        <nav className="navbar">
-          <ul className="nav-links">
-            <li><Link to="/notes">notes</Link></li>
-            <li><Link to="/resources">resources</Link></li>
-            <li><Link to="/talk-to-the-universe">talk to the universe</Link></li>
-            {!isLoggedIn && (
-              <>
-                <li><Link to="/login">login</Link></li>
-                <li><Link to="/register">register</Link></li>
-              </>
-            )}
-            {isLoggedIn && <li><Link to="/logout">logout</Link></li>}
-          </ul>
-        </nav>
+        <Navbar isLoggedIn={isLoggedIn} />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </Router>
