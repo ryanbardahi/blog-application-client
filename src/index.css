@@ -91,3 +91,42 @@ html, body {
   font-size: 1.2em;
   line-height: 1.6;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 5px;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.modal-content .form-label {
+  font-weight: 600;
+}
+
+.modal-content .form-control {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.modal-content .btn {
+  margin-top: 1rem;
+}
