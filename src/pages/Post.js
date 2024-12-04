@@ -18,13 +18,19 @@ const Post = () => {
 
   const formattedDate = new Date(post.createdAt).toLocaleDateString();
 
+  const paragraphs = post.content.split(/\n{2,}/);
+
   return (
     <div className="post-page container my-5">
       <h1 className="post-title">{post.title}</h1>
       <p className="post-meta">
         By {post.author.username} on {formattedDate}
       </p>
-      <div className="post-content">{post.content}</div>
+      <div className="post-content">
+        {paragraphs.map((para, index) => (
+          <p key={index}>{para}</p>
+        ))}
+      </div>
     </div>
   );
 };
