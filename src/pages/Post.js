@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useUserContext } from '../contexts/UserContext';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
@@ -8,11 +8,13 @@ const notyf = new Notyf();
 
 const Post = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user, isLoggedIn } = useUserContext();
   const [post, setPost] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editForm, setEditForm] = useState({ title: '', content: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     fetch(`https://blog-application-server-r3nf.onrender.com/posts/${id}`)
@@ -38,6 +40,8 @@ const Post = () => {
     isLoggedIn &&
     user &&
     (user.id === authorId || user.isAdmin);
+
+  const canDelete = isLoggedIn && user && user.isAdmin;
 
   const handleEditClick = () => {
     setShowModal(true);
@@ -83,6 +87,39 @@ const Post = () => {
     }
   };
 
+  const handleDeleteClick = async () => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this post?');
+    if (!confirmDelete) return;
+
+    setIsDeleting(true);
+
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch(
+        `https://blog-application-server-r3nf.onrender.com/posts/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        notyf.success('Post deleted successfully!');
+        navigate('/notes');
+      } else {
+        const error = await response.json();
+        notyf.error(error.error || 'Failed to delete post.');
+      }
+    } catch (error) {
+      notyf.error('An error occurred while deleting the post.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div className="post-page container my-5 pb-5">
       <h1 className="post-title">{post.title}</h1>
@@ -90,13 +127,24 @@ const Post = () => {
         By {post.author.username} on {formattedDate}
       </p>
 
-      {canEdit && (
-        <button className="btn btn-secondary mb-3" onClick={handleEditClick}>
-          Edit Post
-        </button>
-      )}
+      <div className="d-flex gap-3">
+        {canEdit && (
+          <button className="btn btn-secondary" onClick={handleEditClick}>
+            Edit Post
+          </button>
+        )}
+        {canDelete && (
+          <button
+            className="btn btn-danger"
+            onClick={handleDeleteClick}
+            disabled={isDeleting}
+          >
+            {isDeleting ? 'Deleting...' : 'Delete Post'}
+          </button>
+        )}
+      </div>
 
-      <div className="post-content">
+      <div className="post-content mt-3">
         {paragraphs.map((para, index) => (
           <p key={index}>{para}</p>
         ))}
