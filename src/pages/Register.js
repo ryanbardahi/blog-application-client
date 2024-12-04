@@ -137,16 +137,36 @@ const Register = () => {
         </div>
         <button
           type="submit"
-          className="btn btn-primary w-100"
+          className="btn read-note-btn w-100"
           disabled={isRegistering}
         >
           {isRegistering ? 'Registering...' : 'Register'}
         </button>
         <div className="text-center mt-3">
           <span>Already have an account? </span>
-          <Link to="/login">Sign in</Link>
+          <Link to="/login">Log in</Link>
         </div>
       </form>
+      <footer className="footer mt-5 mb-5 text-center">
+        <p>
+          Page background photo by{' '}
+          <a
+            href="https://unsplash.com/@thommilkovic?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Thom Milkovic
+          </a>{' '}
+          on{' '}
+          <a
+            href="https://unsplash.com/photos/black-sailboat-on-body-of-water-under-gray-sky-e2RisjiIVSw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Unsplash
+          </a>
+        </p>
+      </footer>
     </div>
   );
 };

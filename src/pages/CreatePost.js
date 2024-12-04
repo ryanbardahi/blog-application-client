@@ -88,10 +88,30 @@ const CreatePost = () => {
             placeholder="Use double line breaks to separate paragraphs."
           ></textarea>
         </div>
-        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+        <button type="submit" className="btn read-note-btn" disabled={isSubmitting}>
           {isSubmitting ? 'Submitting...' : 'Create Post'}
         </button>
       </form>
+      <footer className="footer mt-5 mb-5 text-center">
+        <p>
+          Page background photo by{' '}
+          <a
+            href="https://unsplash.com/@thommilkovic?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Thom Milkovic
+          </a>{' '}
+          on{' '}
+          <a
+            href="https://unsplash.com/photos/black-sailboat-on-body-of-water-under-gray-sky-e2RisjiIVSw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Unsplash
+          </a>
+        </p>
+      </footer>
     </div>
   );
 };

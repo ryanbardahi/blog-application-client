@@ -21,7 +21,6 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav mx-auto">
-            {/* Home link visible to all users */}
             <li className="nav-item">
               <Link className="nav-link" to="/">home</Link>
             </li>

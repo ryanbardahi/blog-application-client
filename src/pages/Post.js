@@ -182,7 +182,10 @@ const Post = () => {
         {comments.length > 0 ? (
           <ul className="list-group">
             {comments.map((comment) => (
-              <li key={comment._id} className="list-group-item d-flex justify-content-between align-items-center">
+              <li
+                key={comment._id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
                 <div>
                   <strong>{comment.author.username}:</strong> {comment.content}
                 </div>
@@ -198,10 +201,10 @@ const Post = () => {
             ))}
           </ul>
         ) : (
-          <p>No comments yet.</p>
+          <p>Be the first to comment.</p>
         )}
 
-        {isLoggedIn && (
+        {isLoggedIn ? (
           <form onSubmit={handleAddComment} className="mt-3">
             <div className="mb-3">
               <textarea
@@ -214,14 +217,38 @@ const Post = () => {
             </div>
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn read-note-btn"
               disabled={isSubmittingComment}
             >
               {isSubmittingComment ? 'Submitting...' : 'Add Comment'}
             </button>
           </form>
+        ) : (
+          <p className="text-muted mt-3">
+            Please <a href="/login" className="text-decoration-none">log in</a> to comment.
+          </p>
         )}
       </div>
+      <footer className="footer mt-5 mb-5 text-center">
+        <p>
+          Page background photo by{' '}
+          <a
+            href="https://unsplash.com/@thommilkovic?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Thom Milkovic
+          </a>{' '}
+          on{' '}
+          <a
+            href="https://unsplash.com/photos/black-sailboat-on-body-of-water-under-gray-sky-e2RisjiIVSw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Unsplash
+          </a>
+        </p>
+      </footer>
     </div>
   );
 };

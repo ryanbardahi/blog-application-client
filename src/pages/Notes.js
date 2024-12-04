@@ -24,11 +24,16 @@ const Notes = () => {
             <div className="card h-100">
               <div className="card-body d-flex flex-column">
                 <h5 className="card-title">{post.title}</h5>
-                <h6 className="card-subtitle mb-2 text-muted">By {post.author.username}</h6>
+                <h6 className="card-subtitle mb-2 text-muted">
+                  By {post.author.username} on {new Date(post.createdAt).toLocaleDateString()}
+                </h6>
                 <p className="card-text flex-grow-1">
                   {truncateContent(post.content)}
                 </p>
-                <Link to={`/posts/${post._id}`} className="btn btn-primary mt-auto">
+                <Link
+                  to={`/posts/${post._id}`}
+                  className="btn read-note-btn mt-auto"
+                >
                   Read this meditation note
                 </Link>
               </div>
@@ -36,6 +41,26 @@ const Notes = () => {
           </div>
         ))}
       </div>
+      <footer className="footer mt-5 mb-5 text-center">
+        <p>
+          Page background photo by{' '}
+          <a
+            href="https://unsplash.com/@thommilkovic?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Thom Milkovic
+          </a>{' '}
+          on{' '}
+          <a
+            href="https://unsplash.com/photos/black-sailboat-on-body-of-water-under-gray-sky-e2RisjiIVSw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Unsplash
+          </a>
+        </p>
+      </footer>
     </div>
   );
 };

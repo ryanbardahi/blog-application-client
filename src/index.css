@@ -19,7 +19,6 @@ html, body {
 
 .home-page {
   color: white;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
 
 .page-title {
@@ -145,4 +144,117 @@ html, body {
   background-color: #e4606d;
   border-color: #e4606d;
   cursor: not-allowed;
+}
+
+.carousel-item-content {
+  font-family: 'Montserrat', sans-serif;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  padding: 2rem;
+}
+
+.carousel-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.carousel-meta {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.carousel-body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.2rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.read-note-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #9D00FF;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.read-note-btn:hover {
+  background-color: #4B006E;
+  text-decoration: none;
+  color: #fff;
+}
+
+.intro-section {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #000000;
+  max-width: 800px;
+  text-align: center;
+  background-color: rgba(128, 0, 128, 0.06);
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.footer {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  color: #000000;
+}
+
+.footer a {
+  color: #9D00FF;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.comments-section p.text-muted a {
+  color: #9D00FF;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.comments-section p.text-muted a:hover {
+  text-decoration: underline;
+}
+
+.resources-page h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  color: #333;
+  line-height: 1.8;
+}
+
+.tarot-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tarot-image {
+  max-width: 70%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(128, 0, 128, 0.6);
 }

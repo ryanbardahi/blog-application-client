@@ -8,6 +8,8 @@ import Logout from './pages/Logout';
 import Notes from './pages/Notes';
 import Post from './pages/Post';
 import CreatePost from './pages/CreatePost';
+import Resources from './pages/Resources';
+import TalkToUniverse from './pages/TalkToUniverse';
 import Navbar from './components/Navbar';
 
 const App = () => {
@@ -27,6 +29,8 @@ const App = () => {
             <Route path="/notes" element={<Notes />} />
             <Route path="/posts/:id" element={<Post />} />
             <Route path="/create-post" element={<CreatePost />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/talk-to-the-universe" element={<TalkToUniverse />} />
           </Routes>
         </div>
       </Router>
