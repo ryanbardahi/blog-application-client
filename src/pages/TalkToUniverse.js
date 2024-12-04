@@ -74,7 +74,9 @@ const TalkToUniverse = () => {
           ) : (
             <>
               <h2 className="mb-4 magical-heading">
-                Send your thoughts to the universe...
+                We are connected to the universe. Sending a message is a way to
+                reflect, let go, and find clarity. It’s a meditative process that
+                helps you center yourself and feel heard.
               </h2>
               <form onSubmit={handleSubmit} className="universe-form mx-auto">
                 <div className="mb-4">
