@@ -176,7 +176,78 @@ const Post = () => {
           <p key={index}>{para}</p>
         ))}
       </div>
+        {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>Edit Post</h2>
+            <form>
+              <div className="mb-3">
+                <label htmlFor="postTitle" className="form-label">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="postTitle"
+                  value={post.title}
+                  onChange={(e) => setPost({ ...post, title: e.target.value })}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="postContent" className="form-label">
+                  Content
+                </label>
+                <textarea
+                  className="form-control"
+                  id="postContent"
+                  rows="5"
+                  value={post.content}
+                  onChange={(e) => setPost({ ...post, content: e.target.value })}
+                ></textarea>
+              </div>
+              <button
+                type="button"
+                className="btn btn-primary me-3"
+                onClick={async () => {
+                  const token = localStorage.getItem('token');
+                  try {
+                    const response = await fetch(
+                      `https://blog-application-server-r3nf.onrender.com/posts/${id}`,
+                      {
+                        method: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify(post),
+                      }
+                    );
 
+                    if (response.ok) {
+                      notyf.success('Post updated successfully!');
+                      setShowModal(false);
+                    } else {
+                      const error = await response.json();
+                      notyf.error(error.error || 'Failed to update post.');
+                    }
+                  } catch (error) {
+                    notyf.error('An error occurred while updating the post.');
+                  }
+                }}
+              >
+                Save Changes
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
       <div className="comments-section mt-5">
         <h3>Comments</h3>
         {comments.length > 0 ? (
