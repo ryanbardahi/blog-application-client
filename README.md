@@ -1,70 +1,320 @@
-# Getting Started with Create React App
+# CREDENTIALS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Regular User
+Please register a new user then use that for login. Or use these regular user credentials:
 
-## Available Scripts
+email: ry@mail.com
+password: 1234qwer
 
-In the project directory, you can run:
+## Admin User
+email: admin@mail.com
+password: 1234qwer
 
-### `npm start`
+# API Documentation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Authentication
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Token-Based Authentication: Some endpoints require a valid JWT token.
 
-### `npm test`
+Header Format:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+	Authorization: Bearer <token>
 
-### `npm run build`
+Obtain the token by logging in (/users/login).
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Endpoints
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Users
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Register a New User
 
-### `npm run eject`
+URL: /users/register
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Method: POST
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Description: Create a new user account.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Request Body:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+	{
+	  "email": "user@example.com",
+	  "username": "yourUsername",
+	  "password": "yourPassword"
+	}
 
-## Learn More
+Response:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+201 Created
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+	{
+	  "message": "User registered successfully"
+	}
 
-### Code Splitting
+#### Login a User
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+URL: /users/login
 
-### Analyzing the Bundle Size
+Method: POST
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Description: Authenticate a user and receive a JWT token.
 
-### Making a Progressive Web App
+Request Body:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+	{
+	  "email": "user@example.com",
+	  "password": "yourPassword"
+	}
 
-### Advanced Configuration
+Response:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+200 OK
 
-### Deployment
+	{
+	  "message": "Login successful",
+	  "token": "JWT token string",
+	  "user": {
+	    "id": "userId",
+	    "username": "yourUsername",
+	    "isAdmin": false
+	  }
+	}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Posts
 
-### `npm run build` fails to minify
+#### Get All Posts
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+URL: /posts/
+
+Method: GET
+
+Description: Retrieve all blog posts.
+
+Response:
+
+200 OK
+
+	[
+	  {
+	    "_id": "postId",
+	    "title": "Post Title",
+	    "content": "Post Content",
+	    "author": {
+	      "_id": "authorId",
+	      "username": "authorUsername"
+	    },
+	    "createdAt": "timestamp",
+	    "updatedAt": "timestamp"
+	  },
+	  // ... more posts
+	]
+
+#### Get a Post by ID
+
+URL: /posts/:id
+
+Method: GET
+
+Description: Retrieve a single post by its ID.
+
+URL Parameters:
+
+id: The ID of the post.
+Response:
+
+200 OK
+
+	{
+	  "_id": "postId",
+	  "title": "Post Title",
+	  "content": "Post Content",
+	  "author": {
+	    "_id": "authorId",
+	    "username": "authorUsername"
+	  },
+	  "createdAt": "timestamp",
+	  "updatedAt": "timestamp"
+	}
+
+#### Create a New Post
+
+URL: /posts/
+
+Method: POST
+
+Description: Create a new blog post.
+
+Headers:
+Authorization: Bearer <token>
+
+Request Body:
+
+	{
+	  "title": "New Post Title",
+	  "content": "New Post Content"
+	}
+
+Response:
+
+201 Created
+
+	{
+	  "_id": "newPostId",
+	  "title": "New Post Title",
+	  "content": "New Post Content",
+	  "author": "authorId",
+	  "createdAt": "timestamp",
+	  "updatedAt": "timestamp"
+	}
+
+#### Update a Post
+
+URL: /posts/:id
+
+Method: PUT
+
+Description: Update an existing post.
+
+Headers:
+
+	Authorization: Bearer <token>
+
+URL Parameters:
+
+id: The ID of the post to update.
+
+Request Body:
+
+	{
+	  "title": "Updated Title",     // Optional
+	  "content": "Updated Content"  // Optional
+	}
+
+Response:
+
+200 OK
+
+	{
+	  "_id": "postId",
+	  "title": "Updated Title",
+	  "content": "Updated Content",
+	  "author": "authorId",
+	  "createdAt": "timestamp",
+	  "updatedAt": "timestamp"
+	}
+
+#### Delete a Post
+
+URL: /posts/:id
+
+Method: DELETE
+
+Description: Delete a post (Admin only).
+
+Headers:
+
+	Authorization: Bearer <token>
+
+URL Parameters:
+
+id: The ID of the post to delete.
+
+Response:
+
+200 OK
+
+	{
+	  "message": "Post deleted successfully"
+	}
+
+### Comments
+
+#### Get Comments for a Post
+
+URL: /comments/post/:postId
+
+Method: GET
+
+Description: Retrieve all comments for a specific post.
+
+URL Parameters:
+
+postId: The ID of the post.
+
+Response:
+
+200 OK
+
+	[
+	  {
+	    "_id": "commentId",
+	    "content": "Comment Content",
+	    "author": {
+	      "_id": "authorId",
+	      "username": "authorUsername"
+	    },
+	    "post": "postId",
+	    "createdAt": "timestamp",
+	    "updatedAt": "timestamp"
+	  },
+	  // ... more comments
+	]
+
+#### Add a Comment to a Post
+
+URL: /comments/post/:postId
+
+Method: POST
+
+Description: Add a new comment to a post.
+
+Headers:
+
+	Authorization: Bearer <token>
+
+URL Parameters:
+
+postId: The ID of the post to comment on.
+
+Request Body:
+
+	{
+	  "content": "Your comment"
+	}
+
+Response:
+
+201 Created
+
+	{
+	  "_id": "newCommentId",
+	  "content": "Your comment",
+	  "author": "authorId",
+	  "post": "postId",
+	  "createdAt": "timestamp",
+	  "updatedAt": "timestamp"
+	}
+
+#### Delete a Comment
+
+URL: /comments/:commentId
+
+Method: DELETE
+
+Description: Delete a comment (Admin only).
+
+Headers:
+
+	Authorization: Bearer <token>
+
+URL Parameters:
+
+commentId: The ID of the comment to delete.
+
+Response:
+
+200 OK
+
+	{
+	  "message": "Comment deleted successfully"
+	}
+
